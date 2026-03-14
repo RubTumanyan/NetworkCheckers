@@ -64,25 +64,3 @@ void movePiece(int mouseX, int mouseY)
     selectedX = -1;
     selectedY = -1;
 }
-
-void handleClick(int mouseX, int mouseY)
-{
-    if(selectedX == -1)
-    {
-        if(board[mouseY][mouseX] == turn)
-        {
-            selectedX = mouseX;
-            selectedY = mouseY;
-        }
-    }
-    else
-    {
-        if(isValidMove(mouseX, mouseY))
-            movePiece(mouseX, mouseY);
-        else
-        {
-            selectedX = -1;
-            selectedY = -1;
-        }
-    }
-}
