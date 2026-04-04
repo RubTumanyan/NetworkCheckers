@@ -2,78 +2,94 @@
 #include "../common/board.h"
 #include "../common/move.h"
 #include <iostream>
+#include <cmath>
 
 
-Move handleClick(int mouseX, int mouseY)
+extern int currentPlayer;
+extern int board[8][8];
+
+// --- Handle clicks on the screen ---
+// Returns a Move if a piece is moved, or {-1,-1,-1,-1} if no move
+Move handleScreenClick(int mouseX, int mouseY, int tileSize)
 {
-    static int selectedX = -1;
-    static int selectedY = -1;
+    int x = mouseX / tileSize;
+    int y = mouseY / tileSize;
 
-    Move result{-1, -1, -1, -1}; // default = no move
+    // Out-of-bounds check
+    if (x < 0 || x > 7 || y < 0 || y > 7)
+        return Move{-1, -1, -1, -1};
 
-    if(selectedX == -1 && selectedY == -1) {
-        if(board[mouseY][mouseX] != 0) {
-            selectedX = mouseX;
-            selectedY = mouseY;
+    // ours first selection
+    if (selectedX == -1 && selectedY == -1) {
+        if (board[y][x] != 0 &&
+           ((currentPlayer == 1 && board[y][x] == 1) ||
+            (currentPlayer == 2 && board[y][x] == 2))){
+            selectedX = x;
+            selectedY = y;
         }
-    } else {
-        int dx = mouseX - selectedX;
-        int dy = mouseY - selectedY;
-
-        // normal move (no jump)
-        if(abs(dx) == 1 && ((board[selectedY][selectedX] == 1 && dy == 1) ||
-                            (board[selectedY][selectedX] == 2 && dy == -1))) 
-        {
-            result.fromX = selectedX;
-            result.fromY = selectedY;
-            result.toX = mouseX;
-            result.toY = mouseY;
-
-            // update board locally
-            board[mouseY][mouseX] = board[selectedY][selectedX];
-            board[selectedY][selectedX] = 0;
-        }
-
-        // jump (capture)
-        else if(abs(dx) == 2 && abs(dy) == 2) {
-            int midX = (selectedX + mouseX)/2;
-            int midY = (selectedY + mouseY)/2;
-
-            // simple check: jump opponent
-            if(board[selectedY][selectedX] == 1 && board[midY][midX] == 2) {
-                result = {selectedX, selectedY, mouseX, mouseY};
-                board[mouseY][mouseX] = board[selectedY][selectedX];
-                board[selectedY][selectedX] = 0;
-                board[midY][midX] = 0;
-            }
-            else if(board[selectedY][selectedX] == 2 && board[midY][midX] == 1) {
-                result = {selectedX, selectedY, mouseX, mouseY};
-                board[mouseY][mouseX] = board[selectedY][selectedX];
-                board[selectedY][selectedX] = 0;
-                board[midY][midX] = 0;
-            }
-        }
-
-        selectedX = -1;
-        selectedY = -1;
+        return Move{-1, -1, -1, -1}; // just selection
     }
 
-    return result;
+    //if second selection
+ 
+    if(!isValidMove(x, y, currentPlayer)){
+	    selectedX = -1;
+	    selectedY = -1;
+    	return Move{-1,-1,-1,-1};
+    }
+    
+    Move m{selectedX, selectedY, x, y};
+
+    // Reset selection
+    selectedX = -1;
+    selectedY = -1;
+
+    return m;
 }
 
-// --- applyMove: update board with a received move ---
-void applyMove(const Move& m)
+
+
+void applyMove(const Move& m, int currentPlayer)
 {
-    if(m.fromX == -1) return; // invalid move
-    board[m.toY][m.toX] = board[m.fromY][m.fromX];
+    // --- Bounds check ---
+    if (m.fromX < 0 || m.fromX > 7 || m.fromY < 0 || m.fromY > 7 ||
+        m.toX < 0 || m.toX > 7 || m.toY < 0 || m.toY > 7)
+        return;
+
+    int piece = board[m.fromY][m.fromX];
+    if (piece == 0) return; // nothing to move
+
+    // --- Move the piece ---
+    board[m.toY][m.toX] = piece;
     board[m.fromY][m.fromX] = 0;
 
-    // handle capture if jumping
-    if(abs(m.toX - m.fromX) == 2) {
-        int midX = (m.fromX + m.toX)/2;
-        int midY = (m.fromY + m.toY)/2;
-        board[midY][midX] = 0;
+    // --- Handle captures (works for flying kings too) ---
+    int dx = m.toX - m.fromX;
+    int dy = m.toY - m.fromY;
+
+    if (abs(dx) > 1 || abs(dy) > 1) // if it's a jump
+    {
+        int stepX = (dx > 0) ? 1 : -1;
+        int stepY = (dy > 0) ? 1 : -1;
+
+        int x = m.fromX + stepX;
+        int y = m.fromY + stepY;
+
+        while (x != m.toX && y != m.toY)
+        {
+            if (board[y][x] != 0)
+            {
+                board[y][x] = 0; // remove captured piece
+                break;           // only one piece per jump
+            }
+            x += stepX;
+            y += stepY;
+        }
     }
+
+    // --- Handle promotion to king ---
+    if (currentPlayer == 1 && m.toY == 7 && piece == 1) board[m.toY][m.toX] = 3;
+    if (currentPlayer == 2 && m.toY == 0 && piece == 2) board[m.toY][m.toX] = 4;
 }
 
 void drawBoard(sf::RenderWindow& window, int tileSize)
@@ -89,7 +105,7 @@ void drawBoard(sf::RenderWindow& window, int tileSize)
             else
                 square.setFillColor(sf::Color(139,69,19));
 
-            window.draw(square);
+            window.draw(square);//send the square to window
         }
     }
 }
@@ -99,17 +115,29 @@ void drawPieces(sf::RenderWindow& window, int tileSize)
     for(int y = 0; y < 8; y++){
         for(int x = 0; x < 8; x++){
 
-            if(board[y][x] == 0)
+            int cell = board[y][x];
+
+            if(cell == 0)
                 continue;
 
-            sf::CircleShape piece(tileSize/2 - 10);
-
-            if(board[y][x] == 1)
-                piece.setFillColor(sf::Color::Red);
-            else
-                piece.setFillColor(sf::Color::White);
-
+            sf::CircleShape piece(tileSize / 2 - 10);
             piece.setPosition(x * tileSize + 10, y * tileSize + 10);
+
+            // --- Set color ---
+            if(cell == 1)
+                piece.setFillColor(sf::Color(100, 30, 30));   // player 1
+            else if(cell == 2)
+                piece.setFillColor(sf::Color::White);         // player 2
+            else if(cell == 3) { // king player 1
+                piece.setFillColor(sf::Color(200, 50, 50));
+                piece.setOutlineThickness(3);
+                piece.setOutlineColor(sf::Color::Yellow);
+            }
+            else if(cell == 4) { // king player 2
+                piece.setFillColor(sf::Color(200, 200, 200));
+                piece.setOutlineThickness(3);
+                piece.setOutlineColor(sf::Color::Yellow);
+            }
 
             window.draw(piece);
         }
