@@ -1,4 +1,4 @@
-CMakeFiles/ch.dir/common/board.cpp.o: \
+CMakeFiles/client.dir/common/board.cpp.o: \
  /root/NetworkCheckers/common/board.cpp /usr/include/stdc-predef.h \
  /root/NetworkCheckers/common/board.h /root/NetworkCheckers/common/move.h \
  /usr/include/c++/11/cmath \

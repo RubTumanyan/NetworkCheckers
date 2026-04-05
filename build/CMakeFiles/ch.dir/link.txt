@@ -1,1 +1,0 @@
-/usr/bin/c++ CMakeFiles/ch.dir/client/graphics.cpp.o CMakeFiles/ch.dir/client/main1.cpp.o CMakeFiles/ch.dir/common/board.cpp.o -o ch  /usr/lib/x86_64-linux-gnu/libsfml-graphics.so.2.5.1 /usr/lib/x86_64-linux-gnu/libsfml-window.so.2.5.1 /usr/lib/x86_64-linux-gnu/libsfml-system.so.2.5.1 

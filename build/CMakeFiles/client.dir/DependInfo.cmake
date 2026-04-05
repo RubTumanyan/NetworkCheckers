@@ -8,9 +8,9 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/root/NetworkCheckers/client/graphics.cpp" "CMakeFiles/ch.dir/client/graphics.cpp.o" "gcc" "CMakeFiles/ch.dir/client/graphics.cpp.o.d"
-  "/root/NetworkCheckers/client/main1.cpp" "CMakeFiles/ch.dir/client/main1.cpp.o" "gcc" "CMakeFiles/ch.dir/client/main1.cpp.o.d"
-  "/root/NetworkCheckers/common/board.cpp" "CMakeFiles/ch.dir/common/board.cpp.o" "gcc" "CMakeFiles/ch.dir/common/board.cpp.o.d"
+  "/root/NetworkCheckers/client/graphics.cpp" "CMakeFiles/client.dir/client/graphics.cpp.o" "gcc" "CMakeFiles/client.dir/client/graphics.cpp.o.d"
+  "/root/NetworkCheckers/client/main1.cpp" "CMakeFiles/client.dir/client/main1.cpp.o" "gcc" "CMakeFiles/client.dir/client/main1.cpp.o.d"
+  "/root/NetworkCheckers/common/board.cpp" "CMakeFiles/client.dir/common/board.cpp.o" "gcc" "CMakeFiles/client.dir/common/board.cpp.o.d"
   )
 
 # Targets to which this target links.

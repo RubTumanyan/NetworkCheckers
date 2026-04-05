@@ -11,5 +11,4 @@ extern int selectedY;
 bool hasAnyCapture(int player);
 bool canCaptureAgain(int x, int y, int player);
 bool isValidMove(int mouseX, int mouseY, int player);
-bool hasAnyCapture(int player);
-//void movePiece(int mouseX, int mouseY , int player);
+

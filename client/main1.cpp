@@ -33,9 +33,9 @@ int main()
 
     const int tileSize = 80;
 
-// --- Create the SFML window ---
+    // --- Create  window ---
     sf::RenderWindow window(sf::VideoMode(640, 640), "Checkers");
-    window.setFramerateLimit(60); // limit to 60 FPS if we have more it sleep
+    window.setFramerateLimit(60);               // limit to 60 FPS if we have more it sleep
  
  
     while(window.isOpen())
@@ -63,7 +63,7 @@ int main()
         send(sock, &move, sizeof(move), 0);
 
         if(isCapture && canCaptureAgain(move.toX, move.toY, myPlayer)) {
-            // CONTINUE TURN → do not switch player
+           // CONTINUE TURN → do not switch player
             selectedX = move.toX;
             selectedY = move.toY;
         }
@@ -79,7 +79,7 @@ int main()
 }
 // --- Receive opponent move ---
 Move oppMove;
-int bytes = recv(sock, &oppMove, sizeof(oppMove), MSG_DONTWAIT); // non-blocking
+int bytes = recv(sock, &oppMove, sizeof(oppMove), MSG_DONTWAIT); // dont wait move(recv)
 if(bytes > 0) {
  
     int opponent = (myPlayer == 1) ? 2 : 1;

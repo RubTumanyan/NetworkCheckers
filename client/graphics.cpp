@@ -4,26 +4,23 @@
 #include <iostream>
 #include <cmath>
 
-
 extern int currentPlayer;
 extern int board[8][8];
 
 
-// --- Handle clicks on the screen ---
-// Returns a Move if a piece is moved, or {-1,-1,-1,-1} if no move
 Move handleScreenClick(int mouseX, int mouseY, int tileSize)
-{
-    int x = mouseX / tileSize;
+{   //devide 80picels
+    int x = mouseX / tileSize; 
     int y = mouseY / tileSize;
 
     if (x < 0 || x > 7 || y < 0 || y > 7) return Move{-1,-1,-1,-1};
 
-    // --- FIRST SELECTION ---
+    // FIRST SELECTION
     if (selectedX == -1 && selectedY == -1) {
-        // Check if the clicked cell belongs to the current player
+        // CHECK THE PIECIES OUR'S OR NOT
         if (board[y][x] != 0 && (board[y][x] == currentPlayer || board[y][x] == currentPlayer + 2)) {
             
-            // MANDATORY RULE: If any capture exists on the board
+            // MANDATORY RULE
             if (hasAnyCapture(currentPlayer)) {
                 // Only allow selection if THIS specific piece can capture
                 if (canCaptureAgain(x, y, currentPlayer)) {
@@ -41,7 +38,7 @@ Move handleScreenClick(int mouseX, int mouseY, int tileSize)
         return Move{-1, -1, -1, -1}; 
     }
 
-    // --- SECOND SELECTION (Target Square) ---
+    // SECOND SELECTION
     if(!isValidMove(x, y, currentPlayer)) {
         // If we were in a multi-capture, don't reset selection to -1
         // because the player MUST finish the jump with that piece.
@@ -53,29 +50,35 @@ Move handleScreenClick(int mouseX, int mouseY, int tileSize)
     }
 
     Move m{selectedX, selectedY, x, y};
-    return m; // Selection is reset in the main loop after move is applied
+    return m; 
 }
+
+
+
 
 
 void applyMove(const Move& m, int currentPlayer)
 {
-    // --- Bounds check ---
+    // Bounds check
     if (m.fromX < 0 || m.fromX > 7 || m.fromY < 0 || m.fromY > 7 ||
         m.toX < 0 || m.toX > 7 || m.toY < 0 || m.toY > 7)
         return;
 
     int piece = board[m.fromY][m.fromX];
-    if (piece == 0) return; // nothing to move
+    if (piece == 0) return; 
 
-    // --- Move the piece ---
+    
     board[m.toY][m.toX] = piece;
     board[m.fromY][m.fromX] = 0;
 
-    // --- Handle captures (works for flying kings too) ---
+    // Handle captures (works for flying kings too) ---
     int dx = m.toX - m.fromX;
     int dy = m.toY - m.fromY;
+    
 
-    if (abs(dx) > 1 || abs(dy) > 1) // if it's a jump
+
+    // JUMP
+    if (abs(dx) > 1 || abs(dy) > 1) 
     {
         int stepX = (dx > 0) ? 1 : -1;
         int stepY = (dy > 0) ? 1 : -1;
@@ -95,10 +98,13 @@ void applyMove(const Move& m, int currentPlayer)
         }
     }
 
-    // --- Handle promotion to king ---
+    // TRANSFORMATION TO A KING
     if (currentPlayer == 1 && m.toY == 7 && piece == 1) board[m.toY][m.toX] = 3;
     if (currentPlayer == 2 && m.toY == 0 && piece == 2) board[m.toY][m.toX] = 4;
 }
+
+
+
 
 void drawBoard(sf::RenderWindow& window, int tileSize)
 {
@@ -118,6 +124,10 @@ void drawBoard(sf::RenderWindow& window, int tileSize)
     }
 }
 
+
+
+
+
 void drawPieces(sf::RenderWindow& window, int tileSize)
 {
     for(int y = 0; y < 8; y++){
@@ -131,7 +141,7 @@ void drawPieces(sf::RenderWindow& window, int tileSize)
             sf::CircleShape piece(tileSize / 2 - 10);
             piece.setPosition(x * tileSize + 10, y * tileSize + 10);
 
-            // --- Set color ---
+         
             if(cell == 1)
                 piece.setFillColor(sf::Color(100, 30, 30));   // player 1
             else if(cell == 2)

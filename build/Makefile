@@ -130,24 +130,24 @@ server/fast:
 .PHONY : server/fast
 
 #=============================================================================
-# Target rules for targets named ch
+# Target rules for targets named client
 
 # Build rule for target.
-ch: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 ch
-.PHONY : ch
+client: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 client
+.PHONY : client
 
 # fast build rule for target.
-ch/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ch.dir/build.make CMakeFiles/ch.dir/build
-.PHONY : ch/fast
+client/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/build
+.PHONY : client/fast
 
 client/graphics.o: client/graphics.cpp.o
 .PHONY : client/graphics.o
 
 # target to build an object file
 client/graphics.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ch.dir/build.make CMakeFiles/ch.dir/client/graphics.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/client/graphics.cpp.o
 .PHONY : client/graphics.cpp.o
 
 client/graphics.i: client/graphics.cpp.i
@@ -155,7 +155,7 @@ client/graphics.i: client/graphics.cpp.i
 
 # target to preprocess a source file
 client/graphics.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ch.dir/build.make CMakeFiles/ch.dir/client/graphics.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/client/graphics.cpp.i
 .PHONY : client/graphics.cpp.i
 
 client/graphics.s: client/graphics.cpp.s
@@ -163,7 +163,7 @@ client/graphics.s: client/graphics.cpp.s
 
 # target to generate assembly for a file
 client/graphics.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ch.dir/build.make CMakeFiles/ch.dir/client/graphics.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/client/graphics.cpp.s
 .PHONY : client/graphics.cpp.s
 
 client/main1.o: client/main1.cpp.o
@@ -171,7 +171,7 @@ client/main1.o: client/main1.cpp.o
 
 # target to build an object file
 client/main1.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ch.dir/build.make CMakeFiles/ch.dir/client/main1.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/client/main1.cpp.o
 .PHONY : client/main1.cpp.o
 
 client/main1.i: client/main1.cpp.i
@@ -179,7 +179,7 @@ client/main1.i: client/main1.cpp.i
 
 # target to preprocess a source file
 client/main1.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ch.dir/build.make CMakeFiles/ch.dir/client/main1.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/client/main1.cpp.i
 .PHONY : client/main1.cpp.i
 
 client/main1.s: client/main1.cpp.s
@@ -187,7 +187,7 @@ client/main1.s: client/main1.cpp.s
 
 # target to generate assembly for a file
 client/main1.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ch.dir/build.make CMakeFiles/ch.dir/client/main1.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/client/main1.cpp.s
 .PHONY : client/main1.cpp.s
 
 common/board.o: common/board.cpp.o
@@ -196,7 +196,7 @@ common/board.o: common/board.cpp.o
 # target to build an object file
 common/board.cpp.o:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/board.cpp.o
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ch.dir/build.make CMakeFiles/ch.dir/common/board.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/board.cpp.o
 .PHONY : common/board.cpp.o
 
 common/board.i: common/board.cpp.i
@@ -205,7 +205,7 @@ common/board.i: common/board.cpp.i
 # target to preprocess a source file
 common/board.cpp.i:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/board.cpp.i
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ch.dir/build.make CMakeFiles/ch.dir/common/board.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/board.cpp.i
 .PHONY : common/board.cpp.i
 
 common/board.s: common/board.cpp.s
@@ -214,7 +214,7 @@ common/board.s: common/board.cpp.s
 # target to generate assembly for a file
 common/board.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/server.dir/build.make CMakeFiles/server.dir/common/board.cpp.s
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ch.dir/build.make CMakeFiles/ch.dir/common/board.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/common/board.cpp.s
 .PHONY : common/board.cpp.s
 
 server/server.o: server/server.cpp.o
@@ -249,7 +249,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... ch"
+	@echo "... client"
 	@echo "... server"
 	@echo "... client/graphics.o"
 	@echo "... client/graphics.i"

@@ -20,8 +20,8 @@ int selectedY = -1;
     for (int y = 0; y < 8; y++) {
         for (int x = 0; x < 8; x++) {
             int piece = board[y][x];
-            // Check if the piece belongs to the player (normal or king)
-            if (piece == player || piece == player + 2) {
+            // Check if the piece belongs to the player (normal or king)i
+            if (piece == player || piece == player + 2) {  // We check our piecies have a capture or not
                 if (canCaptureAgain(x, y, player)) {
                     return true; 
                 }
@@ -32,7 +32,7 @@ int selectedY = -1;
 }
 
 bool isValidMove(int toX, int toY, int player) {
-    // 1. Basic Bounds and Occupancy Checks
+    //  Basic Bounds and Occupancy Checks
     if (toX < 0 || toX > 7 || toY < 0 || toY > 7) return false;
     if (selectedX == -1 || selectedY == -1) return false;
     if (board[toY][toX] != 0) return false; // Destination must be empty
@@ -48,7 +48,7 @@ bool isValidMove(int toX, int toY, int player) {
     int enemy = (player == 1) ? 2 : 1;
     int enemyKing = enemy + 2;
 
-    // 2. Scan the diagonal path
+    //  Scan the diagonal path
     int stepX = (dx > 0) ? 1 : -1;
     int stepY = (dy > 0) ? 1 : -1;
     
@@ -78,12 +78,12 @@ bool isValidMove(int toX, int toY, int player) {
         currY += stepY;
     }
 
-    // 3. Validation Logic
+  
     bool boardHasCapture = hasAnyCapture(player);
 
-    // --- CASE A: JUMPING/CAPTURING ---
+    // it's a jumping capture
     if (enemyCount == 1) {
-        // Normal pieces can only jump to the square immediately behind the enemy
+        // Normal pieces
         if (!isKing) {
             if (abs(dx) != 2) return false; 
         }
@@ -91,7 +91,7 @@ bool isValidMove(int toX, int toY, int player) {
         return true; 
     }
 
-    // --- CASE B: NORMAL MOVE (No pieces jumped) ---
+    // normal move without capture
     if (enemyCount == 0) {
         // If a capture is available elsewhere, this move is illegal
         if (boardHasCapture) return false;
@@ -99,14 +99,18 @@ bool isValidMove(int toX, int toY, int player) {
         if (isKing) {
             return true; // Flying kings can move any distance on clear diagonal
         } else {
-            // Normal pieces move 1 step forward only
+            // Normal pieces
             if (player == 1 && dy == 1 && abs(dx) == 1) return true;
             if (player == 2 && dy == -1 && abs(dx) == 1) return true;
         }
     }
 
-    return false; // Path had > 1 enemy or was otherwise invalid
+    return false;
 }
+
+
+
+
 
 bool canCaptureAgain(int x, int y, int player)
 {
@@ -127,7 +131,7 @@ bool canCaptureAgain(int x, int y, int player)
         int landX = x + 2*d[0];
         int landY = y + 2*d[1];
 
-        // --- обычная шашка ---
+        //normal piece
         if (!isKing)
         {
             if (landX >= 0 && landX < 8 && landY >= 0 && landY < 8)
@@ -141,7 +145,7 @@ bool canCaptureAgain(int x, int y, int player)
         }
         else
         {
-            // --- дамка (flying king) ---
+            // flying king
             int cx = x + d[0];
             int cy = y + d[1];
             bool foundEnemy = false;

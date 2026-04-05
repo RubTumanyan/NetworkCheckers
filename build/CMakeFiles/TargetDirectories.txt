@@ -1,4 +1,4 @@
 /root/NetworkCheckers/build/CMakeFiles/server.dir
-/root/NetworkCheckers/build/CMakeFiles/ch.dir
+/root/NetworkCheckers/build/CMakeFiles/client.dir
 /root/NetworkCheckers/build/CMakeFiles/edit_cache.dir
 /root/NetworkCheckers/build/CMakeFiles/rebuild_cache.dir

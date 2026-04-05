@@ -64,7 +64,7 @@ CMAKE_BINARY_DIR = /root/NetworkCheckers/build
 
 # The main recursive "all" target.
 all: CMakeFiles/server.dir/all
-all: CMakeFiles/ch.dir/all
+all: CMakeFiles/client.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -73,7 +73,7 @@ preinstall:
 
 # The main recursive "clean" target.
 clean: CMakeFiles/server.dir/clean
-clean: CMakeFiles/ch.dir/clean
+clean: CMakeFiles/client.dir/clean
 .PHONY : clean
 
 #=============================================================================
@@ -103,30 +103,30 @@ CMakeFiles/server.dir/clean:
 .PHONY : CMakeFiles/server.dir/clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/ch.dir
+# Target rules for target CMakeFiles/client.dir
 
 # All Build rule for target.
-CMakeFiles/ch.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ch.dir/build.make CMakeFiles/ch.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ch.dir/build.make CMakeFiles/ch.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/root/NetworkCheckers/build/CMakeFiles --progress-num=1,2,3,4 "Built target ch"
-.PHONY : CMakeFiles/ch.dir/all
+CMakeFiles/client.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/root/NetworkCheckers/build/CMakeFiles --progress-num=1,2,3,4 "Built target client"
+.PHONY : CMakeFiles/client.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/ch.dir/rule: cmake_check_build_system
+CMakeFiles/client.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /root/NetworkCheckers/build/CMakeFiles 4
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/ch.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/client.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /root/NetworkCheckers/build/CMakeFiles 0
-.PHONY : CMakeFiles/ch.dir/rule
+.PHONY : CMakeFiles/client.dir/rule
 
 # Convenience name for target.
-ch: CMakeFiles/ch.dir/rule
-.PHONY : ch
+client: CMakeFiles/client.dir/rule
+.PHONY : client
 
 # clean rule for target.
-CMakeFiles/ch.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/ch.dir/build.make CMakeFiles/ch.dir/clean
-.PHONY : CMakeFiles/ch.dir/clean
+CMakeFiles/client.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/client.dir/build.make CMakeFiles/client.dir/clean
+.PHONY : CMakeFiles/client.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

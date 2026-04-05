@@ -1,4 +1,4 @@
-#include <iostream>
+#include <iostream>             //server with epoll
 #include <vector>
 #include <map>
 #include <sys/epoll.h>
@@ -10,7 +10,7 @@
 #define MAX_EVENTS 64
 #define PORT 54000
 
-// Helper to make sockets non-blocking
+// make sockets non-blocking
 void set_nonblocking(int sock) {
     int opts = fcntl(sock, F_GETFL);
     fcntl(sock, F_SETFL, opts | O_NONBLOCK);
@@ -19,7 +19,7 @@ void set_nonblocking(int sock) {
 int main() {
     int server_fd = socket(AF_INET, SOCK_STREAM, 0);
     int opt = 1;
-    setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+    setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt)); //  turn on the SO_REUSEADDR
 
     sockaddr_in addr{AF_INET, htons(PORT), INADDR_ANY};
     bind(server_fd, (sockaddr*)&addr, sizeof(addr));
@@ -38,7 +38,7 @@ int main() {
     std::cout << "Epoll Server running on port " << PORT << "..." << std::endl;
 
     while (true) {
-        int nfds = epoll_wait(epoll_fd, events, MAX_EVENTS, -1);
+        int nfds = epoll_wait(epoll_fd, events, MAX_EVENTS, -1); // return the ready list size
         for (int i = 0; i < nfds; ++i) {
             if (events[i].data.fd == server_fd) {
                 int client = accept(server_fd, nullptr, nullptr);
@@ -67,12 +67,12 @@ int main() {
                     std::cout << "Player disconnected: " << fd << std::endl;
                     close(fd);
                     epoll_ctl(epoll_fd, EPOLL_CTL_DEL, fd, nullptr);
-                    // Handle cleanup for opponent if needed
+              
                 } else if (pairs.count(fd)) {
                     send(pairs[fd], &m, sizeof(Move), 0);
                 }
             }
-        }
-    }
+        } //for
+    } // while
     return 0;
 }
