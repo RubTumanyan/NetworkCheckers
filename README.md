@@ -37,7 +37,7 @@ Epoll (server-side)
     server.cpp
 ⚙️ How It Works
 🔹 Server
-Uses epoll to handle multiple clients
+Uses EPOLL to handle multiple clients
 Pairs two players into a game
 Forwards moves between players
 🔹 Client
