@@ -1,5 +1,5 @@
 🎮 Network Checkers (C++ / SFML)
-📌 Overview
+Overview
 
 This project is a multiplayer checkers game written in C++ using SFML for graphics and TCP sockets for networking.
 
@@ -9,14 +9,14 @@ Piece movement
 Capturing (including multiple captures)
 King promotion
 Flying kings (long diagonal moves)
-🚀 Features
+ Features
 ♟️ Classic checkers gameplay
 🌐 Multiplayer using TCP sockets
-🧠 Turn-based logic
+ Turn-based logic
 🔁 Multi-capture (chain jumps)
 👑 King promotion and flying kings
-🎨 Graphical board using SFML
-⚡ Non-blocking network communication
+ Graphical board using SFML
+ Non-blocking network communication
 🛠️ Technologies Used
 C++
 SFML (Simple and Fast Multimedia Library)
@@ -61,7 +61,7 @@ Run the client twice (in two terminals) to start a game.
 🖱️ Mouse click to:
 Select a piece
 Choose destination tile
-📜 Game Rules
+ Game Rules
 Pieces move diagonally
 Captures are mandatory
 Multiple captures allowed in one turn
@@ -81,7 +81,7 @@ Add AI opponent
 Better error handling for networking
 👤 Author
 
-Created by Rubs
+Created by Ruben
 Student of Applied Mathematics & Informatics
 
 ⭐ Notes
