@@ -15,109 +15,98 @@ int board[8][8] = {
 int selectedX = -1;
 int selectedY = -1;
 
-bool hasAnyCapture(int player) {
-    for(int y = 0; y < 8; y++) {
-        for(int x = 0; x < 8; x++) {
-            if(board[y][x] == player || board[y][x] == player + 2) {
-                if(canCaptureAgain(x, y, player))
-                    return true;
+
+ bool hasAnyCapture(int player) {
+    for (int y = 0; y < 8; y++) {
+        for (int x = 0; x < 8; x++) {
+            int piece = board[y][x];
+            // Check if the piece belongs to the player (normal or king)
+            if (piece == player || piece == player + 2) {
+                if (canCaptureAgain(x, y, player)) {
+                    return true; 
+                }
             }
         }
     }
     return false;
 }
 
+bool isValidMove(int toX, int toY, int player) {
+    // 1. Basic Bounds and Occupancy Checks
+    if (toX < 0 || toX > 7 || toY < 0 || toY > 7) return false;
+    if (selectedX == -1 || selectedY == -1) return false;
+    if (board[toY][toX] != 0) return false; // Destination must be empty
 
-bool isValidMove(int mouseX, int mouseY, int player)
-{	    if (selectedX != -1 && selectedY != -1 && canCaptureAgain(selectedX, selectedY, player)) {
-	    if (mouseX != selectedX || mouseY != selectedY) {
-        return false; // must move the same piece
-    }
-	}
-    // bounds
-    if (mouseX < 0 || mouseX > 7 || mouseY < 0 || mouseY > 7)
-        return false;
+    int dx = toX - selectedX;
+    int dy = toY - selectedY;
 
-    if (selectedX == -1 || selectedY == -1)
-        return false;
-
-    if (board[mouseY][mouseX] != 0)
-        return false;
-
-    int dx = mouseX - selectedX;
-    int dy = mouseY - selectedY;
-
-    if (abs(dx) != abs(dy))
-        return false; // must move diagonally
+    // Must move diagonally
+    if (abs(dx) != abs(dy)) return false;
 
     int piece = board[selectedY][selectedX];
     bool isKing = (piece == 3 || piece == 4);
-
     int enemy = (player == 1) ? 2 : 1;
     int enemyKing = enemy + 2;
 
-    bool mustCapture = hasAnyCapture(player);
-
+    // 2. Scan the diagonal path
     int stepX = (dx > 0) ? 1 : -1;
     int stepY = (dy > 0) ? 1 : -1;
-
-    int x = selectedX + stepX;
-    int y = selectedY + stepY;
-
+    
     int enemyCount = 0;
+    int lastEnemyX = -1;
+    int lastEnemyY = -1;
 
-    // 🔥 scan path
-    while (x != mouseX && y != mouseY)
-    {
-        if (board[y][x] != 0)
-        {
-            if (board[y][x] == enemy || board[y][x] == enemyKing)
-            {
+    int currX = selectedX + stepX;
+    int currY = selectedY + stepY;
+
+    while (currX != toX && currY != toY) {
+        int cell = board[currY][currX];
+        
+        if (cell != 0) {
+            // If it's our own piece, the path is blocked
+            if (cell == player || cell == player + 2) return false;
+            
+            // If it's an enemy, count it
+            if (cell == enemy || cell == enemyKing) {
                 enemyCount++;
-                if (enemyCount > 1) return false;
+                lastEnemyX = currX;
+                lastEnemyY = currY;
             }
-            else return false; // own piece blocks
         }
-
-        x += stepX;
-        y += stepY;
+        
+        currX += stepX;
+        currY += stepY;
     }
 
-    // 🔥 MUST CAPTURE
-    if (mustCapture)
-        return enemyCount == 1;
+    // 3. Validation Logic
+    bool boardHasCapture = hasAnyCapture(player);
 
-    // 🔥 KING
-    if (isKing)
-    {
-        // normal move
-        if (enemyCount == 0)
-            return true;
-
-        // capture
-        return enemyCount == 1;
+    // --- CASE A: JUMPING/CAPTURING ---
+    if (enemyCount == 1) {
+        // Normal pieces can only jump to the square immediately behind the enemy
+        if (!isKing) {
+            if (abs(dx) != 2) return false; 
+        }
+        // If it's a king, it can land anywhere on the diagonal after the enemy
+        return true; 
     }
 
-    // 🔥 NORMAL PIECE
+    // --- CASE B: NORMAL MOVE (No pieces jumped) ---
+    if (enemyCount == 0) {
+        // If a capture is available elsewhere, this move is illegal
+        if (boardHasCapture) return false;
 
-    // normal move (1 step forward)
-    if (enemyCount == 0)
-    {
-        if (player == 1 && dy == 1) return true;
-        if (player == 2 && dy == -1) return true;
-        return false;
+        if (isKing) {
+            return true; // Flying kings can move any distance on clear diagonal
+        } else {
+            // Normal pieces move 1 step forward only
+            if (player == 1 && dy == 1 && abs(dx) == 1) return true;
+            if (player == 2 && dy == -1 && abs(dx) == 1) return true;
+        }
     }
 
-    // capture (exactly 2 steps)
-    if (enemyCount == 1 && abs(dx) == 2)
-        return true;
-
-    return false;
+    return false; // Path had > 1 enemy or was otherwise invalid
 }
-         
-
-
-
 
 bool canCaptureAgain(int x, int y, int player)
 {
@@ -127,43 +116,58 @@ bool canCaptureAgain(int x, int y, int player)
     int enemy = (player == 1) ? 2 : 1;
     int enemyKing = enemy + 2;
 
-    int directions[4][2] = {
-        {1,1}, {-1,1}, {1,-1}, {-1,-1}
+    int dirs[4][2] = {
+        {1,1},{-1,1},{1,-1},{-1,-1}
     };
 
-    for (auto& d : directions)
+    for (auto& d : dirs)
     {
-        int stepX = d[0];
-        int stepY = d[1];
+        int midX = x + d[0];
+        int midY = y + d[1];
+        int landX = x + 2*d[0];
+        int landY = y + 2*d[1];
 
-        int cx = x + stepX;
-        int cy = y + stepY;
-
-        bool foundEnemy = false;
-
-        while (cx >= 0 && cx < 8 && cy >= 0 && cy < 8)
+        // --- обычная шашка ---
+        if (!isKing)
         {
-            if (board[cy][cx] != 0)
+            if (landX >= 0 && landX < 8 && landY >= 0 && landY < 8)
             {
-                if (board[cy][cx] == enemy || board[cy][cx] == enemyKing)
+                if ((board[midY][midX] == enemy || board[midY][midX] == enemyKing)
+                    && board[landY][landX] == 0)
                 {
-                    if (foundEnemy) break;
-                    foundEnemy = true;
+                    return true;
                 }
-                else break;
             }
-            else if (foundEnemy)
+        }
+        else
+        {
+            // --- дамка (flying king) ---
+            int cx = x + d[0];
+            int cy = y + d[1];
+            bool foundEnemy = false;
+
+            while (cx >= 0 && cx < 8 && cy >= 0 && cy < 8)
             {
-                return true;
+                if (board[cy][cx] != 0)
+                {
+                    if (board[cy][cx] == enemy || board[cy][cx] == enemyKing)
+                    {
+                        if (foundEnemy) break;
+                        foundEnemy = true;
+                    }
+                    else break;
+                }
+                else if (foundEnemy)
+                {
+                    return true;
+                }
+
+                cx += d[0];
+                cy += d[1];
             }
-
-            // 🔥 normal piece stops after 2 steps
-            if (!isKing) break;
-
-            cx += stepX;
-            cy += stepY;
         }
     }
 
     return false;
 }
+

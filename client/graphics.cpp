@@ -8,6 +8,7 @@
 extern int currentPlayer;
 extern int board[8][8];
 
+
 // --- Handle clicks on the screen ---
 // Returns a Move if a piece is moved, or {-1,-1,-1,-1} if no move
 Move handleScreenClick(int mouseX, int mouseY, int tileSize)
@@ -15,38 +16,45 @@ Move handleScreenClick(int mouseX, int mouseY, int tileSize)
     int x = mouseX / tileSize;
     int y = mouseY / tileSize;
 
-    // Out-of-bounds check
-    if (x < 0 || x > 7 || y < 0 || y > 7)
-        return Move{-1, -1, -1, -1};
+    if (x < 0 || x > 7 || y < 0 || y > 7) return Move{-1,-1,-1,-1};
 
-    // ours first selection
+    // --- FIRST SELECTION ---
     if (selectedX == -1 && selectedY == -1) {
-        if (board[y][x] != 0 &&
-           ((currentPlayer == 1 && board[y][x] == 1) ||
-            (currentPlayer == 2 && board[y][x] == 2))){
-            selectedX = x;
-            selectedY = y;
+        // Check if the clicked cell belongs to the current player
+        if (board[y][x] != 0 && (board[y][x] == currentPlayer || board[y][x] == currentPlayer + 2)) {
+            
+            // MANDATORY RULE: If any capture exists on the board
+            if (hasAnyCapture(currentPlayer)) {
+                // Only allow selection if THIS specific piece can capture
+                if (canCaptureAgain(x, y, currentPlayer)) {
+                    selectedX = x;
+                    selectedY = y;
+                } else {
+                    std::cout << "Invalid selection: You must capture with another piece!" << std::endl;
+                }
+            } else {
+                // No captures available anywhere, free to select any of our pieces
+                selectedX = x;
+                selectedY = y;
+            }
         }
-        return Move{-1, -1, -1, -1}; // just selection
+        return Move{-1, -1, -1, -1}; 
     }
 
-    //if second selection
- 
-    if(!isValidMove(x, y, currentPlayer)){
-	    selectedX = -1;
-	    selectedY = -1;
-    	return Move{-1,-1,-1,-1};
+    // --- SECOND SELECTION (Target Square) ---
+    if(!isValidMove(x, y, currentPlayer)) {
+        // If we were in a multi-capture, don't reset selection to -1
+        // because the player MUST finish the jump with that piece.
+        if (!canCaptureAgain(selectedX, selectedY, currentPlayer)) {
+            selectedX = -1;
+            selectedY = -1;
+        }
+        return Move{-1,-1,-1,-1};
     }
-    
+
     Move m{selectedX, selectedY, x, y};
-
-    // Reset selection
-    selectedX = -1;
-    selectedY = -1;
-
-    return m;
+    return m; // Selection is reset in the main loop after move is applied
 }
-
 
 
 void applyMove(const Move& m, int currentPlayer)
