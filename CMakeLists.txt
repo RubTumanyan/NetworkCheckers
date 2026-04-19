@@ -10,7 +10,7 @@ find_package(SFML 2.5 COMPONENTS graphics window system REQUIRED)
 set(COMMON_SOURCES common/board.cpp)
 
 # Server executable (Epoll)
-add_executable(server server/server.cpp ${COMMON_SOURCES})
+add_executable(server server/server1.cpp ${COMMON_SOURCES})
 
 # Client executable
 add_executable(client client/graphics.cpp client/main1.cpp ${COMMON_SOURCES})
