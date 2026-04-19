@@ -1,4 +1,4 @@
-🎮 Network Checkers (C++ / SFML)
+ Network Checkers (C++ / SFML)
 Overview
 
 This project is a multiplayer checkers game written in C++ using SFML for graphics and TCP sockets for networking.
@@ -10,19 +10,20 @@ Capturing (including multiple captures)
 King promotion
 Flying kings (long diagonal moves)
  Features
-♟️ Classic checkers gameplay
-🌐 Multiplayer using TCP sockets
+ Classic checkers gameplay
+Multiplayer using TCP sockets
  Turn-based logic
-🔁 Multi-capture (chain jumps)
-👑 King promotion and flying kings
+ Multi-capture (chain jumps)
+King promotion and flying kings
  Graphical board using SFML
  Non-blocking network communication
-🛠️ Technologies Used
+Technologies Used
 C++
+
 SFML (Simple and Fast Multimedia Library)
 POSIX sockets (TCP)
 Epoll (server-side)
-📂 Project Structure
+ Project Structure
 /client
     main1.cpp
     graphics.cpp
@@ -35,7 +36,7 @@ Epoll (server-side)
 
 /server
     server.cpp
-⚙️ How It Works
+ How It Works
 🔹 Server
 Uses EPOLL to handle multiple clients
 Pairs two players into a game
@@ -57,8 +58,8 @@ g++ main1.cpp graphics.cpp ../common/board.cpp -o client -lsfml-graphics -lsfml-
 
 Run the client twice (in two terminals) to start a game.
 
-🎮 Controls
-🖱️ Mouse click to:
+ Controls
+ Mouse click to:
 Select a piece
 Choose destination tile
  Game Rules
@@ -69,22 +70,22 @@ Pieces become kings upon reaching the opposite side
 Kings can:
 Move diagonally in all directions
 Capture over long distances (flying kings)
-⚠️ Known Issues
+ Known Issues
 Turn synchronization may break if connection is unstable
 No UI feedback for valid moves yet
 No win/lose detection implemented
-🔮 Future Improvements
+ Future Improvements
 Highlight valid moves
 Add win condition detection
 Improve UI/UX (animations, sounds)
 Add AI opponent
 Better error handling for networking
-👤 Author
+ Author
 
 Created by Ruben
 Student of Applied Mathematics & Informatics
 
-⭐ Notes
+ Notes
 
 This project was built for learning:
 
