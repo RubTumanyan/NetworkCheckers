@@ -109,10 +109,10 @@ cd build
 cmake ..
 make
 in first process run
-./server
-and in two other process run 
-./client
-and you can play
+./server  
+and in two other process run     
+./client    
+and you can play  
 Thanks 
 
 
