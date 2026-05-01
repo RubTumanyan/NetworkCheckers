@@ -108,6 +108,8 @@ mkdir build
 cd build  
 cmake ..  
 make   
+
+
 in first process run  
 ./server   
 and in two other process run       
