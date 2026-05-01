@@ -37,26 +37,38 @@ Epoll (server-side)
 /server
     server.cpp
  How It Works
-🔹 Server
+ Server
 Uses EPOLL to handle multiple clients
 Pairs two players into a game
 Forwards moves between players
-🔹 Client
+ Client
 Connects to server via TCP
 Receives player ID (1 or 2)
 Sends moves to server
 Renders board using SFML
-▶️ How to Run
-1. Start the server
-cd server
-g++ server.cpp -o server
-./server
-2. Run two clients
-cd client
-g++ main1.cpp graphics.cpp ../common/board.cpp -o client -lsfml-graphics -lsfml-window -lsfml-system
-   ch
 
-Run the client twice (in two terminals) to start a game.
+
+How to Build & Run  
+ Requirements  
+C++17 compatible compiler (g++)  
+CMake (>= 3.10)   
+SFML (2.5+)   
+
+Install SFML (Linux):  
+sudo apt-get install libsfml-dev  
+
+Build the Project   
+mkdir build  
+cd build  
+cmake ..  
+make   
+
+
+in first process run  
+./server   
+and in two other process run       
+./client  
+and you can play
 
  Controls
  Mouse click to:
@@ -94,27 +106,6 @@ Game logic implementation
 Real-time interaction
 Graphics programming with SFML
 
-How to Build & Run  
- Requirements  
-C++17 compatible compiler (g++)  
-CMake (>= 3.10)   
-SFML (2.5+)   
 
-Install SFML (Linux):  
-sudo apt-get install libsfml-dev  
-
-Build the Project   
-mkdir build  
-cd build  
-cmake ..  
-make   
-
-
-in first process run  
-./server   
-and in two other process run       
-./client  
-and you can play  
-Thanks 
 
 
