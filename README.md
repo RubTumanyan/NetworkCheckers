@@ -94,24 +94,24 @@ Game logic implementation
 Real-time interaction
 Graphics programming with SFML
 
-How to Build & Run
- Requirements
-C++17 compatible compiler (g++)
-CMake (>= 3.10)
-SFML (2.5+)
+How to Build & Run  
+ Requirements  
+C++17 compatible compiler (g++)  
+CMake (>= 3.10)   
+SFML (2.5+)   
 
-Install SFML (Linux):
-sudo apt-get install libsfml-dev
+Install SFML (Linux):  
+sudo apt-get install libsfml-dev  
 
-Build the Project
-mkdir build
-cd build
-cmake ..
-make
-in first process run
-./server  
-and in two other process run     
-./client    
+Build the Project   
+mkdir build  
+cd build  
+cmake ..  
+make   
+in first process run  
+./server   
+and in two other process run       
+./client  
 and you can play  
 Thanks 
 
